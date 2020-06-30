@@ -25,3 +25,9 @@ sudo docker stop iacmetricsAPI
 sudo docker rm  iacmetricsAPI
 sudo docker rmi sodalite/iacmetrics
 ```
+## IaC Metrics REST API
+URL
+```
+POST http://104.197.166.112:5000/metrics/ansible/file
+```
+Send the Ansible file as multipart/form-data (name:” file”, value: actual file)
