@@ -15,6 +15,26 @@ pipeline {
             """
       }
     }
+	stage('Build docker images') {
+            steps {
+                sh "docker build -t iacmetrics  -f Dockerfile ."                
+            }
+    }   
+    stage('Push Dockerfile to DockerHub') {
+            when {
+               branch "master"
+            }
+            steps {
+                withDockerRegistry(credentialsId: 'jenkins-sodalite.docker_token', url: '') {
+                    sh  """#!/bin/bash                       
+                            docker tag iacmetrics sodaliteh2020/iacmetrics:${BUILD_NUMBER}
+                            docker tag iacmetrics sodaliteh2020/iacmetrics
+                            docker push sodaliteh2020/iacmetrics:${BUILD_NUMBER}
+                            docker push sodaliteh2020/iacmetrics
+                        """
+                }
+            }
+    }
   }
   post {
     failure {
