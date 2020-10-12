@@ -15,6 +15,16 @@ pipeline {
             """
       }
     }
+	stage('SonarQube analysis'){
+        environment {
+          scannerHome = tool 'SonarQubeScanner'
+        }
+        steps {
+            withSonarQubeEnv('SonarCloud') {
+                      sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
+    }
 	stage('Build docker images') {
             steps {
                 sh "docker build -t iacmetrics  -f Dockerfile ."                
