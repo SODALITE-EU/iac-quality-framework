@@ -15,6 +15,13 @@ pipeline {
             """
       }
     }
+	stage('Test iac-quality-framework') {
+        steps {
+            sh  """ #!/bin/bash             
+                    python -m unittest discover -s . -p "Test*.py"                    
+                """
+        }
+    }	
 	stage('SonarQube analysis'){
         environment {
           scannerHome = tool 'SonarQubeScanner'
