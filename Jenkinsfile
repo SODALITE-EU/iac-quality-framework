@@ -18,7 +18,7 @@ pipeline {
 	stage('Test iac-quality-framework') {
         steps {
             sh  """ #!/bin/bash             
-                    python -m unittest discover -s . -p "Test*.py"                    
+                    python3 -m unittest discover -s . -p "Test*.py"
                 """
         }
     }	
