@@ -17,11 +17,14 @@ pipeline {
     }
 	stage('Test iac-quality-framework') {
         steps {
-            sh  """ #!/bin/bash             
-                    python3 -m unittest discover -s . -p "Test*.py"
+            sh  """ #!/bin/bash
+                    pip3 install -r requirements.txt
+                    pip3 install -e .
+                    python3 -m pytest --pyargs -s ${WORKSPACE}/tests --junitxml="results.xml" --cov=components --cov=models --cov-report xml tests/
                 """
+            junit 'results.xml'
         }
-    }	
+    }
 	stage('SonarQube analysis'){
         environment {
           scannerHome = tool 'SonarQubeScanner'
