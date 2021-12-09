@@ -36,13 +36,22 @@ pipeline {
         }
     }
 	stage('Build docker images') {
+			when {
+				allOf {
+				// Triggered on every tag
+					expression{tag "*"}
+				   }
+            } 
             steps {
                 sh "docker build -t iacmetrics  -f Dockerfile ."                
             }
     }   
     stage('Push Dockerfile to DockerHub') {
-            when {
-               branch "master"
+		    when {
+				allOf {
+				// Triggered on every tag
+					expression{tag "*"}
+				   }
             }
             steps {
                 withDockerRegistry(credentialsId: 'jenkins-sodalite.docker_token', url: '') {
